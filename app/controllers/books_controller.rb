@@ -1,10 +1,10 @@
 class BooksController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_book, only: %i[ show update destroy ]
 
   # GET /books
   def index
     @books = Book.all
-
     render json: @books
   end
 
