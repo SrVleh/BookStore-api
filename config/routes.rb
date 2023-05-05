@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get '/current_user', to: 'current_user#index'
+  resources :current_user
   resources :books
 
   get '/profile_page', to: 'profile_page#show'
