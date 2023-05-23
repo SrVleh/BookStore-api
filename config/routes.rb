@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  resources :ordered_books
   resources :orders
   resources :current_user
   resources :books
 
   get '/profile_page', to: 'profile_page#show'
+  get '/ongoing_order', to: 'orders#ongoing_order'
   get '/ordered_books/:id', to: 'orders#ordered_books'
 
   devise_for :users, path: '', path_names: {
