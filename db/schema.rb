@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_09_151019) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_16_155001) do
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -19,6 +19,34 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_09_151019) do
     t.datetime "updated_at", null: false
     t.string "image_url"
     t.text "synopsis"
+    t.integer "order_id"
+    t.integer "stock", default: 1
+    t.index ["order_id"], name: "index_books_on_order_id"
+  end
+
+  create_table "books_orders", id: false, force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "book_id", null: false
+    t.index ["book_id", "order_id"], name: "index_books_orders_on_book_id_and_order_id"
+    t.index ["order_id", "book_id"], name: "index_books_orders_on_order_id_and_book_id"
+  end
+
+  create_table "cart", force: :cascade do |t|
+    t.integer "orders_id"
+    t.integer "books_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["books_id"], name: "index_cart_on_books_id"
+    t.index ["orders_id"], name: "index_cart_on_orders_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.integer "orders_id"
+    t.integer "books_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["books_id"], name: "index_carts_on_books_id"
+    t.index ["orders_id"], name: "index_carts_on_orders_id"
   end
 
   create_table "devise_api_tokens", force: :cascade do |t|
@@ -37,10 +65,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_09_151019) do
     t.index ["resource_owner_type", "resource_owner_id"], name: "index_devise_api_tokens_on_resource_owner"
   end
 
+  create_table "ordered_books", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity", default: 1
+    t.index ["book_id"], name: "index_ordered_books_on_book_id"
+    t.index ["order_id"], name: "index_ordered_books_on_order_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "books_count"
+    t.integer "total_price"
+    t.boolean "order_completed", default: false
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
