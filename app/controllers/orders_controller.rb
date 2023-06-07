@@ -60,8 +60,10 @@ class OrdersController < ApplicationController
   def set_total_price
     Order.all.each do | order |
       total_price = 0
-      order.books.each do | book |
-        total_price += book.price
+      OrderedBook.all.each do | ob |
+        if ob.order_id === order.id
+          total_price += ob.book.price * ob.quantity
+        end
       end
       Order.find(order.id).update(total_price: total_price)
     end
