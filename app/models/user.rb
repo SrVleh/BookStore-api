@@ -4,4 +4,5 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   has_many :orders
+  has_many :comments
 end
