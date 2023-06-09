@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_16_155001) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_07_190640) do
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -47,6 +47,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_155001) do
     t.datetime "updated_at", null: false
     t.index ["books_id"], name: "index_carts_on_books_id"
     t.index ["orders_id"], name: "index_carts_on_orders_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "body"
+    t.integer "user_id"
+    t.integer "book_id"
+    t.index ["book_id"], name: "index_comments_on_book_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "devise_api_tokens", force: :cascade do |t|
@@ -104,5 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_155001) do
   end
 
   add_foreign_key "books", "orders"
+  add_foreign_key "comments", "books"
+  add_foreign_key "comments", "users"
   add_foreign_key "orders", "users"
 end
