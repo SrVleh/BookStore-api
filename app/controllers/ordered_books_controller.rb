@@ -49,7 +49,6 @@ class OrderedBooksController < ApplicationController
       @ordered_book = OrderedBook.find(params[:id])
     end
 
-    # TODO: Refactor 'filter_by_current_orders'
     def filter_by_current_orders
       @ordered_books = []
       @order = current_user.orders.where(:order_completed => false)
